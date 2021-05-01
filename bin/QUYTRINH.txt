@@ -1,0 +1,21 @@
+QUY TRÌNH:
+(30/04/2021)
+P1: Xây dựng model và kiểm tra thử model
+
+(1/5/2021)
+P2: mô phỏng truy cập folder và lấy toàn bộ danh sách file
+	ví dụ: folder 192.168.0.1 -> FileServer A : có danh sách gồm 10 files
+	
+	//lấy toàn bộ 10 file=>bỏ vào 1 list
+	
+	<tạm thời cùng 1 máy> ==> sau khi sang máy ảo sẽ ở thư mục khác
+	thực hiện vận chuyển:
+		  fileserver->masterserver
+		  masterserver->client		
+(unpredicted)
+P3: xóa danh sách file khi tắt
+	tải file
+	gửi gói lỗi
+	
+(unpredicted)
+P4: Triển Khai trên máy ảo

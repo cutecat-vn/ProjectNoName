@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/QUYTRINH.txt=UTF-8
 encoding//src/application/server/fileserver/FileServer.java=UTF-8
 encoding//src/application/server/masterserver/ClientHandler.java=UTF-8
 encoding//src/application/server/masterserver/MasterServer.java=UTF-8
