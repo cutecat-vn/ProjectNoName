@@ -1,0 +1,28 @@
+-> masterclass 
+	(máy này)
+	PORT: 5000
+	số lượng : 1
+	IP và PORT: cố định
+	chức năng:
+		1. nhận IP từ fileserver
+		2. chia sẻ danh sách file cho client các file + thông tin fileserver chứa nó
+	tổng kết:có thể kết nối tới nhiều file-server để và nhiều client
+
+-> FileServer
+	(máy ubuntu)
+	PORT: 6000
+	số lượng : nhiều
+	IP và PORT: tùy thuộc theo server
+	chức năng:  
+		1. chia sẽ IP và port kèm theo ds file cho master
+		2. sử dụng UDP để tải file cho client
+		3. khi tắt thì phải thông báo cho fileserver để loại bỏ file tương ứng
+	tổng kết:kết nối tới client bằng UDP để send file
+
+-> Client
+	(máy này)
+	PORT : 7000
+	số lượng : nhiều
+	chức năng:
+		1. nhận danh sách file kèm thông tin của fileserver
+		2. tải file
