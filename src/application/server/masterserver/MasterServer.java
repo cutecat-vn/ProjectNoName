@@ -5,20 +5,22 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import application.enity.*;
 
 public class MasterServer extends Server{
 	
 	// list
-	private List<FileSender> lstFileSender;
+	private Set<FileSender> lstFileSender;
 	
 	
-	public MasterServer(InetAddress iP, int pORT) {
-		super(iP, pORT);
-		lstFileSender = new LinkedList<FileSender>();
+	public MasterServer(AddressNet addr) {
+		super(addr);
+		lstFileSender = new HashSet<FileSender>();
 	}
 	
 	@Override
@@ -52,19 +54,24 @@ public class MasterServer extends Server{
 				
 				fSend = dis.readUTF();
 				String[]fs = fSend.split("_");
-				if(fs[0] == "C") {
+				
+				if(fs[0].equals("C")) {
 					
-					System.out.println("New Client " + fs[1] + " " + fs[2]);
+//					System.out.println("New Client " + fs[1] + " " + fs[2]);
 					
 					ClientHandler clientHandler = new ClientHandler(s, dis, dos, lstFileSender);
 					clientHandler.start();
 				} else {
 					//tạo một luồng mới để xử lí cho fileserver
 					
-					System.out.println("New File Server " + fs[1] + " " + fs[2]);
+//					System.out.println("New File Server " + fs[1] + " " + fs[2]);
 					
-//					FileServerHandler fileServerHandler = new FileServerHandler();
-//					fileServerHandler.start();				
+					FileServerHandler fileServerHandler = new FileServerHandler(s, dis, dos, lstFileSender);
+					fileServerHandler.start();
+					fileServerHandler.join();
+					lstFileSender = fileServerHandler.getLstFileSender();
+					
+//					System.out.println("Hello :" + lstFileSender.get(0).getAddr().getIP().getHostAddress());
 				}
 				
 			} catch (Exception e) {

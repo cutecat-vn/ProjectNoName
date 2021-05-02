@@ -25,8 +25,7 @@ public class FileEnity implements Serializable{
 		this.dir = dir;
 	}
 	
-	public FileEnity(String filename, String dir, String location) {
-		super();
+	public FileEnity(String filename, String dir) {
 		this.filename = filename;
 		this.dir = dir;
 	}

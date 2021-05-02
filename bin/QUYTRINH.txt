@@ -1,21 +1,32 @@
 QUY TRÌNH:
 (30/04/2021)
-P1: Xây dựng model và kiểm tra thử model
+P1: 
+	Xây dựng model và kiểm tra thử model
 
 (1/5/2021)
-P2: mô phỏng truy cập folder và lấy toàn bộ danh sách file
-	ví dụ: folder 192.168.0.1 -> FileServer A : có danh sách gồm 10 files
+P2: 
+	xây dựng client và kiểm tra kết nối
+	mô phỏng truy cập folder và lấy toàn bộ danh sách file
 	
+	<lưu ý ở trường hợp nội bộ được phép điều chỉnh port của fileserver thông qua scanner>
+	ví dụ: folder 192.168.0.1 -> FileServer A : có danh sách gồm 10 files
 	//lấy toàn bộ 10 file=>bỏ vào 1 list
 	
+(mai hoặc không)
+P2.5:
 	<tạm thời cùng 1 máy> ==> sau khi sang máy ảo sẽ ở thư mục khác
 	thực hiện vận chuyển:
-		  fileserver->masterserver
-		  masterserver->client		
+		  fileserver->masterserver => xong
+		  masterserver->client (on update)
+	
 (unpredicted)
 P3: xóa danh sách file khi tắt
 	tải file
 	gửi gói lỗi
 	
 (unpredicted)
-P4: Triển Khai trên máy ảo
+P4: 
+	Triển Khai trên máy ảo
+
+P5: 
+	test và làm thêm các điều kiện báo lỗi

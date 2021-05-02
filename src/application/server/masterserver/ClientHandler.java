@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import application.enity.FileSender;
 
@@ -14,9 +15,9 @@ public class ClientHandler extends Thread {
 	private Socket s;
 	private DataInputStream dis;
 	private DataOutputStream dos;
-	private List<FileSender> lstFileSender;
+	private Set<FileSender> lstFileSender;
 
-	public ClientHandler(Socket s, DataInputStream dis, DataOutputStream dos, List<FileSender> lstSender) {
+	public ClientHandler(Socket s, DataInputStream dis, DataOutputStream dos, Set<FileSender> lstSender) {
 		this.s=  s;
 		this.dis = dis;
 		this.dos = dos;
@@ -29,24 +30,25 @@ public class ClientHandler extends Thread {
         while (true) 
         {
             try {
-                dos.writeUTF("  Nhấn LIST để lấy danh sách file. Nhấn EXIT để thoát ");
-                received = dis.readUTF(); 
-                if(received.equals("Exit"))
-                { 
-                    this.s.close();
-                    break;
-                }
-                switch (received) {
-                	case "LIST":
-                		ObjectOutputStream oos = new ObjectOutputStream(dos);
-                		oos.writeObject(lstFileSender);
-                		break;
-                    default:
-                        dos.writeUTF("Sai Cú Pháp");
-                        break;
-                }
+            		// hứng yêu cầu từ client
+	                received = dis.readUTF(); 
+	                if(received.equals("Exit") || received == null || received == "")
+	                { 
+	                    this.s.close();
+	                    break;
+	                }
+	                switch (received) {
+	                	case "LIST":
+	                		ObjectOutputStream oos = new ObjectOutputStream(dos);
+	                		oos.writeObject(lstFileSender);
+	                		break;
+	                    default:
+	                        dos.writeUTF("Sai Cú Pháp");
+	                        break;
+	                }
+            	
             } catch (IOException e) {
-                e.printStackTrace();
+                break;
             }
         }
         try

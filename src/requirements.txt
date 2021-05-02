@@ -10,19 +10,31 @@
 
 -> FileServer
 	(máy ubuntu)
-	PORT: 6000
+	PORT_TCP: 6000
+	PORT_UDP: 7000
+	
 	số lượng : nhiều
 	IP và PORT: tùy thuộc theo server
 	chức năng:  
 		1. chia sẽ IP và port kèm theo ds file cho master
 		2. sử dụng UDP để tải file cho client
 		3. khi tắt thì phải thông báo cho fileserver để loại bỏ file tương ứng
+		
+		3.1 Trường hợp biên: (not require)
+			-> thêm một file mới trong lúc FileServer đã bật
+	
 	tổng kết:kết nối tới client bằng UDP để send file
 
 -> Client
 	(máy này)
-	PORT : 7000
+	vì client không có port nên ta cho nó port 0 trong mục định danh
 	số lượng : nhiều
 	chức năng:
 		1. nhận danh sách file kèm thông tin của fileserver
 		2. tải file
+		
+		
+LƯU Ý CÔNG NGHỆ:
+-JAVA
+-NẾU SỐ LƯỢNG == 1:
+	KHÔNG SỬ DỤNG THREAD
