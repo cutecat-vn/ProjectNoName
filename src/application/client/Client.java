@@ -28,11 +28,17 @@ import application.enity.InfoFileSender;
 
 public class Client {
 	
+	@Deprecated
 	private static String findLocation(String filename, String HOSTNAME, int PORT, Set<FileSender> lstFileSender) {
 		 FileSender s = lstFileSender.stream().parallel().filter(fs -> (fs.getAddr().getIP().getHostName().equals(HOSTNAME) && fs.getAddr().getPORT() == PORT))
 							  .findFirst().orElse(null);
 		 String dir = s.getLstFile().stream().parallel().filter(f -> f.getFilename().equals(filename)).findFirst().orElse(null).getDir();
-		 return dir;
+		 return dir;	 
+	}
+	
+	private static FileSender findSenderFile(String HOSTNAME, int PORT, Set<FileSender> lstFileSender) {
+		return lstFileSender.stream().parallel().filter(fs -> (fs.getAddr().getIP().getHostName().equals(HOSTNAME) && fs.getAddr().getPORT() == PORT))
+				  .findFirst().orElse(null);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -40,6 +46,19 @@ public class Client {
 		dos_server.writeUTF("LIST");	        	
 		ObjectInputStream objectinputstream = new ObjectInputStream(dis_server);
     	return (Set<FileSender>) objectinputstream.readObject();
+	}
+	
+	
+	private static void loadListFile(Set<FileSender> lstFileSender) {
+    	System.out.println("Danh Sách File Và Máy Chủ:");
+    	
+    	for(FileSender sender : lstFileSender) {
+    		System.out.println("Máy Chủ : " + sender.getAddr().getIP() + ":" + sender.getAddr().getPORT());
+    		for(int i = 0; i < sender.getLstFile().size(); i++) {
+    			FileEnity e = sender.getLstFile().get(i);    			
+    			System.out.println("->" + i + ". " +  e.getFilename() + " - Location: " + e.getDir());
+    		}
+    	}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -87,23 +106,16 @@ public class Client {
 			        	// yêu cầu gói LIST
 			        	
 		        		lstFileSender = getData(dos_server, dis_server);
-		        		
-			        	System.out.println("Danh Sách File Và Máy Chủ:");
-			        	
-			        	for(FileSender sender : lstFileSender) {
-			        		System.out.println("Máy Chủ : " + sender.getAddr().getIP() + ":" + sender.getAddr().getPORT());
-			        		for(FileEnity f : sender.getLstFile()) {
-			        			System.out.println("->" + f.getFilename());
-			        		}
-			        	}
+		        		loadListFile(lstFileSender);
 		        	}catch (Exception e) {
 						continue;
 					}
 		        }
 		        else if(option == 2) {
+		        	loadListFile(lstFileSender);
 		        	
-		        	System.out.println("Nhập File Cần Nhận: ");
-		        	String filename = scanner.next();
+		        	System.out.println("Chọn File Cần Chọn (Nhập Số): ");
+		        	int _i_f =  Integer.parseInt(scanner.next());
 		        	
 		        	System.out.println("Nhập Host Name Máy Chủ: ");
 		        	String HOSTNAME = scanner.next();
@@ -112,58 +124,62 @@ public class Client {
 		        	int PORT = Integer.parseInt(scanner.next());
 		        	
 		        	// tạo kết nối
-	
 		        	InetAddress addr = InetAddress.getByName(HOSTNAME);
 		        	
-		        	System.out.println("Addr : "+addr.getHostAddress());
+		        	System.out.println("Connecting to Addr : "+addr.getHostAddress() + "....");
 		        	
-		        	InfoFileSender infoSender = new InfoFileSender(filename, 
-		        									findLocation(filename, 
-		        												 HOSTNAME, 
-		        											 	 PORT, 
-		        												 lstFileSender));
-		        	
-		        	System.out.println("Info : " + infoSender.getLocation() + " " + infoSender.getFilename() );
-		        	
-		        	ByteArrayOutputStream out = new ByteArrayOutputStream();
-		            ObjectOutputStream os = new ObjectOutputStream(out);
-		            os.writeObject(infoSender);
-		            byte[] data_info =  out.toByteArray();
-		            DatagramPacket packet_info = new DatagramPacket(data_info, data_info.length, addr, PORT);
-		            DatagramSocket socket = null;
-		            try {
-		            	socket = new DatagramSocket();
-		            	try {
-		            		socket.send(packet_info);
-		            		
-		            		
-		            		// nhận file gửi từ client
-		            		
-		            		byte[] data_file = new byte[2048];
-		            		 
-							DatagramPacket packet_file = new DatagramPacket(data_file, 0, data_file.length);
-							// Monitor the data of the server
-							socket.receive(packet_file);
-	
-							// Nhận packet dưới dạng bytes và lưu xuống local storage
-						
-							out_save = new FileOutputStream(dir_local_storage + filename);
-							out_save.write(packet_file.getData());
-							
-							System.out.println("Saved");
-							System.out.println(out_save.toString());
-							
-							out_save.close();
-							socket.close();
-		            		
-		            	}catch (Exception e) {
-		            		e.printStackTrace();
-						}
-		            
-		            }catch (Exception e) {
-		            	e.printStackTrace();
-					}
-		            socket.close();
+		        	FileSender s = findSenderFile(HOSTNAME, PORT, lstFileSender);
+		        	if(s != null ) {
+		        		
+		        		if(_i_f < 0 || _i_f >= s.getLstFile().size() ) {
+		        			System.out.println("Index Invalid");
+		        		}else {
+		        			FileEnity fileChooser = s.getLstFile().get(_i_f);
+				        	InfoFileSender infoSender = new InfoFileSender( fileChooser.getFilename() ,  fileChooser.getDir()  );
+				        	
+				        	System.out.println("Info : " + infoSender.getLocation() + " " + infoSender.getFilename() );
+				        	
+				        	ByteArrayOutputStream out = new ByteArrayOutputStream();
+				            ObjectOutputStream os = new ObjectOutputStream(out);
+				            os.writeObject(infoSender);
+				            byte[] data_info =  out.toByteArray();
+				            DatagramPacket packet_info = new DatagramPacket(data_info, data_info.length, addr, PORT);
+				            DatagramSocket socket = null;
+				            try {
+				            	socket = new DatagramSocket();
+				            	try {
+				            		socket.send(packet_info);
+				            		// nhận file gửi từ client
+				            		
+				            		byte[] data_file = new byte[2048];
+				            		 
+									DatagramPacket packet_file = new DatagramPacket(data_file, 0, data_file.length);
+									// Monitor the data of the server
+									socket.receive(packet_file);
+			
+									// Nhận packet dưới dạng bytes và lưu xuống local storage
+								
+									out_save = new FileOutputStream(dir_local_storage + fileChooser.getFilename());
+									out_save.write(packet_file.getData());
+									
+									System.out.println("Saved, Escaping...");
+									
+									out_save.close();
+									socket.close();
+				            		
+				            	}catch (Exception e) {
+				            		e.printStackTrace();
+								}
+				            
+				            }catch (Exception e) {
+				            	e.printStackTrace();
+							}
+				            socket.close();
+		        		}
+		        	} else {		        		
+		        		System.out.println("Information your input to valid, Exit...");
+		        	}
+		        	System.out.println("Closed");
 		        } else {
 		        	dos_server.writeUTF("EXIT");		        	
 		        	dis_server.close();

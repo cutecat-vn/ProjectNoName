@@ -22,8 +22,7 @@ P2.5:
 (unpredicted)
 P3: xóa danh sách file khi tắt
 	tải file
-	gửi gói lỗi
-	
+
 (unpredicted)
 P4: 
 	Triển Khai trên máy ảo

@@ -26,7 +26,6 @@ public class ClientHandler extends Thread {
 	@Override
 	public void run() {
 		// tách gói
-		
 		System.out.println("Hello Client");
 		
 		int port_packet = packet.getPort();
@@ -50,7 +49,6 @@ public class ClientHandler extends Thread {
 						  System.out.println(line);  
 					  }
 			}
-			
 			
 			byte[] bytes_file = new byte[(int) f.length()];
 		    FileInputStream fis = null;
