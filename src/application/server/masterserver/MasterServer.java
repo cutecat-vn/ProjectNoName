@@ -3,6 +3,7 @@ package application.server.masterserver;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.Thread.State;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashSet;
@@ -28,6 +29,14 @@ public class MasterServer extends Server{
 		super.startUp();
 	}
 	
+	public FileSender findSenderFile(String HOSTNAME, int PORT) {
+		return lstFileSender.stream()
+				  .parallel()
+				  .filter(fs -> (fs.getAddr().getIP().getHostName().equals(HOSTNAME) && fs.getAddr().getPORT() == PORT))
+				  .findFirst()
+				  .orElse(null);
+	}
+	
 	@Override
 	public void terminal() throws IOException {
 		serverSocket.close();
@@ -40,6 +49,7 @@ public class MasterServer extends Server{
 		while (true) {
 			Socket s = null;
 			String fSend = null;
+			
 			try {
 				s = serverSocket.accept();
 				System.out.println("Accepting...");
@@ -68,12 +78,12 @@ public class MasterServer extends Server{
 					
 					FileServerHandler fileServerHandler = new FileServerHandler(s, dis, dos, lstFileSender);
 					fileServerHandler.start();
+							
 					fileServerHandler.join();
 					lstFileSender = fileServerHandler.getLstFileSender();
-					
+								
 //					System.out.println("Hello :" + lstFileSender.get(0).getAddr().getIP().getHostAddress());
 				}
-				
 			} catch (Exception e) {
 				this.terminal();
 			}	

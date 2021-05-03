@@ -26,26 +26,37 @@ public class FileServerHandler extends Thread{
 		this.lstFileSender = lstSender;
 	}
 	
+	
+	
+	private FileSender sender;
+	
 	@Override
 	public void run() {
-		String received;
-		FileSender sender;
+		String received = null;
 		ObjectInputStream objectinputstream = null;
             try {
             	objectinputstream = new ObjectInputStream(dis);
             	sender = (FileSender) objectinputstream.readObject();
                 lstFileSender.add(sender);
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }  
+                
+//                receive packet terminal from fileServer
+//  			  when FileServer Terminated received catch Exception=>remove
+                  received = dis.readUTF();
+                }
+            	catch (Exception e) {
+            		lstFileSender.remove(sender);
+            		return;
+            	} 
+         return;
+            
 	}
-
+	
 	public Set<FileSender> getLstFileSender() {
 		return lstFileSender;
 	}
 
-	
-	
-	
-	
+	public FileSender getSender() {
+		return sender;
+	}
+
 }
