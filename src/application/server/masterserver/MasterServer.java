@@ -55,6 +55,8 @@ public class MasterServer extends Server{
 				System.out.println("Accepting...");
 				System.out.println("Listening...");
 				
+				//nhận dữ liệu
+				
 				DataInputStream dis = new DataInputStream(s.getInputStream());
 				DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 				

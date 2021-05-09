@@ -3,10 +3,13 @@ package application.enity;
 import java.io.Serializable;
 import java.net.InetAddress;
 
+
+//đảm nhận việc lưu thông tin địa chỉ net
 public class AddressNet implements Serializable {
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	private InetAddress IP;
 	private int PORT;

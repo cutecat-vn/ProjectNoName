@@ -2,6 +2,7 @@ package application.enity;
 
 import java.io.Serializable;
 
+//lưu thông tin file
 public class FileEnity implements Serializable{
 	/**
 	 * 

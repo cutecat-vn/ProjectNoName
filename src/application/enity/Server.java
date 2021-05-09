@@ -4,10 +4,15 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
+
+// lớp thuần ảo Server
+// đại diện là lớp cha cho fileserver và masterserver
+
 public abstract class Server {
+	
+	
 	protected AddressNet addr;
 	protected ServerSocket serverSocket;
-	
 	
 	public Server(AddressNet addr) {
 		super();

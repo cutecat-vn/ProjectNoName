@@ -1,6 +1,11 @@
 eclipse.preferences.version=1
 encoding//src/QUYTRINH.txt=UTF-8
 encoding//src/application/client/Client.java=UTF-8
+encoding//src/application/enity/AddressNet.java=UTF-8
+encoding//src/application/enity/FileEnity.java=UTF-8
+encoding//src/application/enity/FileSender.java=UTF-8
+encoding//src/application/enity/Server.java=UTF-8
+encoding//src/application/server/fileserver/ClientHandler.java=UTF-8
 encoding//src/application/server/fileserver/FileServer.java=UTF-8
 encoding//src/application/server/fileserver/MainFileServer.java=UTF-8
 encoding//src/application/server/masterserver/ClientHandler.java=UTF-8

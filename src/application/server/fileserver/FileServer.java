@@ -85,8 +85,6 @@ public class FileServer extends Server {
 	@Override
 	public void terminal() throws IOException {
 		System.out.println("File Server is terminal");
-		// kêu thằng server		
-		dos.writeUTF("K_" + addr.getIP().getHostAddress() + "_" + addr.getPORT());
 		serverSocket.close();
 		sServer.close();
 		sUDP.close();

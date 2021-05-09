@@ -5,8 +5,12 @@ import java.net.InetAddress;
 
 import application.enity.AddressNet;
 
+
+//Main
 public class MainFileServer {
 	public static void main(String[] args) throws IOException {
+		
+		//thông tin ip
 		InetAddress ip = InetAddress.getByName("localhost");
 		// nhập port vào
 		AddressNet addr = new AddressNet(ip, 6002);

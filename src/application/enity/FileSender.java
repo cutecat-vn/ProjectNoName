@@ -3,6 +3,12 @@ package application.enity;
 import java.io.Serializable;
 import java.util.List;
 
+//lưu thông tin file gửi đi
+//đại diện cho 1 fileserver
+//bao gồm:
+//địa chỉ fileserver
+//danh sách file có trong server đó
+
 public class FileSender implements Serializable {
 	/**
 	 * 
