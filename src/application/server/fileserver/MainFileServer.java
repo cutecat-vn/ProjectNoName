@@ -15,9 +15,13 @@ public class MainFileServer {
 		// nhập port vào
 		AddressNet addr = new AddressNet(ip, 6002);
 		
-		FileServer fileServer = new FileServer(addr
-									,"../ProjectNoName/tests/" + addr.getPORT() );
+		FileServer fileServer = new FileServer(addr,"../ProjectNoName/tests/" + addr.getPORT() );
 		fileServer.operation();
 	}	
+	
+	@Override
+	protected void finalize() throws Throwable {
+		System.out.println("Hello DM");
+	}
 	
 }

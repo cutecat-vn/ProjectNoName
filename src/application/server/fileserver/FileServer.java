@@ -24,7 +24,7 @@ import application.enity.Server;
 
 // trước khi tắt phải báo cho master server
 
-public class FileServer extends Server {
+public class FileServer extends Server{
 	
 	private FileSender fileSender;
 	private String pathLoc;
@@ -65,8 +65,20 @@ public class FileServer extends Server {
 		SocketAddress sAddr = new InetSocketAddress(ipMasterServer, 5000);
 		
 		sServer = new Socket();
-		sServer.connect(sAddr);	
-        
+		while(sServer.isConnected() == false) {
+			try {	
+				sServer = new Socket();
+				sServer.connect(sAddr);	
+			} catch (Exception e) {
+				System.out.println("Connect Again With Master server");
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException ex) {					
+					ex.printStackTrace();
+				}			
+			}
+		}
+			
 		dos = new DataOutputStream(sServer.getOutputStream());
         dis = new DataInputStream(sServer.getInputStream());
         
@@ -109,7 +121,10 @@ public class FileServer extends Server {
 			
 				sUDP.receive(packet); //chờ bắt gói				
 				ClientHandler handler = new ClientHandler(packet);
-				handler.start();				
+				handler.start();			
+				
+				//Thread.get
+				
 			} catch(Exception ex) {				
 				ex.printStackTrace();
 				this.terminal();
@@ -120,7 +135,9 @@ public class FileServer extends Server {
 	public FileSender getFileSender() {
 		return fileSender;
 	}
-
+	
+	
+	
 	public void setFileSender(FileSender fileSender) {
 		this.fileSender = fileSender;
 	}

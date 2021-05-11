@@ -32,22 +32,15 @@ public class FileServerHandler extends Thread{
 	
 	@Override
 	public void run() {
-		String received = null;
 		ObjectInputStream objectinputstream = null;
             try {
-            	objectinputstream = new ObjectInputStream(dis);
-            	sender = (FileSender) objectinputstream.readObject();
-                lstFileSender.add(sender);
-                
-//                receive packet terminal from fileServer
-//  			  when FileServer Terminated received catch Exception=>remove
-                  received = dis.readUTF();
+            	  objectinputstream = new ObjectInputStream(dis);
+            	  sender = (FileSender) objectinputstream.readObject();
+                  lstFileSender.add(sender);
                 }
             	catch (Exception e) {
-            		lstFileSender.remove(sender);
             		return;
             	} 
-         return;
             
 	}
 	
@@ -58,5 +51,5 @@ public class FileServerHandler extends Thread{
 	public FileSender getSender() {
 		return sender;
 	}
-
+	
 }

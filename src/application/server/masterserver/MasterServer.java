@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import application.enity.*;
 
@@ -79,13 +80,24 @@ public class MasterServer extends Server{
 //					System.out.println("New File Server " + fs[1] + " " + fs[2]);
 					
 					FileServerHandler fileServerHandler = new FileServerHandler(s, dis, dos, lstFileSender);
-					fileServerHandler.start();
-							
-					fileServerHandler.join();
+//					FileServerWaitDieHandler waitDie = new FileServerWaitDieHandler(s, dis, lstFileSender);
+					
+					
+					fileServerHandler.start();										
+					fileServerHandler.join();					
+//					waitDie.start();
+					
 					lstFileSender = fileServerHandler.getLstFileSender();
-								
-//					System.out.println("Hello :" + lstFileSender.get(0).getAddr().getIP().getHostAddress());
+					lstFileSender = lstFileSender.stream().distinct().collect(Collectors.toSet());	
+					
+					
+//					if(waitDie.getState() == Thread.State.TERMINATED || waitDie.isAlive() == false) {
+//						waitDie.join();
+//					}		
+					//System.out.println("Hello :" + lstFileSender.get(0).getAddr().getIP().getHostAddress());
 				}
+				
+				
 			} catch (Exception e) {
 				this.terminal();
 			}	
