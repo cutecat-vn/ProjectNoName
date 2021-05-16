@@ -19,6 +19,7 @@ import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -70,9 +71,19 @@ public class Client {
 		Socket sServer = null;
 		Set<FileSender> lstFileSender = new HashSet<FileSender>();
 		int option;
-		
+		String clientID =new Random().nextInt(1000000) + "";
 		// đường dẫn thư mục chứa file sau khi nhận từ fileserver
-		final String dir_local_storage = "../ProjectNoName/tests/client/";
+		String dir_local_storage = System.getProperty("user.home") + "/Documents/Client/";
+		
+		dir_local_storage += clientID + "/";
+		File fDic = new File(dir_local_storage);
+		if(!fDic.exists()) {
+			fDic.mkdir();
+		}
+        
+		
+		System.out.println(dir_local_storage);
+		
 		FileOutputStream out_save = null;	
 		try {
 			// đầu tiên kết nối với master server
@@ -160,7 +171,7 @@ public class Client {
 				            try {
 				            	socket = new DatagramSocket();
 				            	try {
-				            		// gửi packet 
+				            		// gửi packet 				            		
 				            		socket.send(packet_info);
 				            		// nhận file gửi từ client
 				            		
@@ -171,7 +182,7 @@ public class Client {
 									socket.receive(packet_file);
 			
 									//lưu thông tin packet ra file
-								
+									
 									out_save = new FileOutputStream(dir_local_storage + fileChooser.getFilename());
 									out_save.write(packet_file.getData());
 									

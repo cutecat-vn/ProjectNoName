@@ -31,6 +31,7 @@ public class ClientHandler extends Thread {
 		
 		int port_packet = packet.getPort();
 		InetAddress ip_packet = packet.getAddress();
+		
 		// phân tích gói từ client->gói FileEnity
 		ByteArrayInputStream in = new ByteArrayInputStream(packet.getData());
 	    ObjectInputStream is;
@@ -85,7 +86,6 @@ public class ClientHandler extends Thread {
 				e.printStackTrace();
 			}
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
 		}
 	}
 }
